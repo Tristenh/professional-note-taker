@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 3001;
 // create express app
 const app = express();
 // import the api routes
-const api = require("./routes/index");
+const api = require("./routes/routesIndex");
 
 // middleware for parsing JSON data
 app.use(express.json());
