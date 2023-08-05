@@ -50,5 +50,40 @@ apiNotes.post("/", (req, res) => {
     res.status(500).json("Error in posting note");
   }
 });
+
+// DELETE route by query the notes id
+apiNotes.delete("/:id", (req, res) => {
+  const noteId = req.params.id;
+  // reading existing db.json data
+  fs.readFile("./db/db.json", (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      let parsedNotes = JSON.parse(data);
+      deletedNotes = parsedNotes.filter((note) => note.id !== noteId);
+      //  writing deleted note to db.json
+      fs.writeFile(
+        "./db/db.json",
+        JSON.stringify(deletedNotes, null, 2),
+        (writeErr) =>
+          writeErr
+            ? console.error(writeErr)
+            : console.info("Successfully updated note!")
+      );
+    }
+  });
+  // response to client about the deleted note
+  const response = {
+    status: "success",
+  };
+  if (response) {
+    console.log(response);
+    res.status(201).json(response);
+  } else {
+    // id req body does not have required data return error
+    res.status(500).json("Error in posting note");
+  }
+});
+
 // export router
 module.exports = apiNotes;
